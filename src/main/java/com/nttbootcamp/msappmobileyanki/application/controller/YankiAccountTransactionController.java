@@ -1,7 +1,7 @@
 package com.nttbootcamp.msappmobileyanki.application.controller;
 
 import com.nttbootcamp.msappmobileyanki.domain.beans.YankiOperationDTO;
-import com.nttbootcamp.msappmobileyanki.infraestructure.interfaces.IYankiAccountTransactionService;
+import com.nttbootcamp.msappmobileyanki.infraestructure.services.YankiAccountTransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,18 +20,29 @@ import java.util.Map;
 @RequestMapping("/YankiMobile/Actions/YankiOperations")
 public class YankiAccountTransactionController {
     @Autowired
-    private IYankiAccountTransactionService service;
-    @PostMapping("/")
-    public Mono<ResponseEntity<Map<String, Object>>> yankiPayment(@Valid @RequestBody Mono<YankiOperationDTO> request) {
+    private YankiAccountTransactionService service;
+    @PostMapping("/Receive")
+    public Mono<ResponseEntity<Map<String, Object>>> yankiReceivePayment(@Valid @RequestBody Mono<YankiOperationDTO> request) {
 
         Map<String, Object> response = new HashMap<>();
 
-        return request.flatMap(a -> service.doYankiPayment(a).map(c -> {
+        return request.flatMap(a -> service.doReceive(a).map(c -> {
             response.put("Yanki Payment Operation", c);
             response.put("message", "Successful Yanki Payment Transaction ");
             return ResponseEntity.created(URI.create("/YankiMobile/Actions/YankiOperations".concat(c.getTransactionId())))
                     .contentType(MediaType.APPLICATION_JSON).body(response);
         }));
     }
+    @PostMapping("/Send")
+    public Mono<ResponseEntity<Map<String, Object>>> yankiPayment(@Valid @RequestBody Mono<YankiOperationDTO> request) {
 
+        Map<String, Object> response = new HashMap<>();
+
+        return request.flatMap(a -> service.doPayment(a).map(c -> {
+            response.put("Yanki Payment Operation", c);
+            response.put("message", "Successful Yanki Outgout Payment Transaction ");
+            return ResponseEntity.created(URI.create("/YankiMobile/Actions/YankiOperations".concat(c.getTransactionId())))
+                    .contentType(MediaType.APPLICATION_JSON).body(response);
+        }));
+    }
 }

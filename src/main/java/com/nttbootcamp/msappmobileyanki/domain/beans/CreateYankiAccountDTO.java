@@ -20,5 +20,6 @@ public class CreateYankiAccountDTO {
     private String docIdemType;
     @NotBlank
     private String docNum;
+    private String cardnumber;
 }
 

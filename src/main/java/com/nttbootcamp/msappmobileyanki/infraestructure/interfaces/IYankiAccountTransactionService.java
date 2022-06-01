@@ -20,6 +20,10 @@ public interface IYankiAccountTransactionService {
 	
 	Flux<Transaction> saveAll(List<Transaction> a);
 
-    Mono<Transaction> doYankiPayment(YankiOperationDTO dto);
+
+
+	Mono<Transaction> doPayment(YankiOperationDTO operationDTO);
+
+	Mono<Transaction> doReceive(YankiOperationDTO operationDTO);
 
 }

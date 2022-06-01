@@ -1,6 +1,7 @@
 package com.nttbootcamp.msappmobileyanki.infraestructure.kafkaservices;
 
 import com.nttbootcamp.msappmobileyanki.domain.beans.DebitCardDTO;
+import com.nttbootcamp.msappmobileyanki.domain.model.DebitCard;
 import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
@@ -8,7 +9,7 @@ import java.math.BigDecimal;
 public interface IDebitCardStream {
     Mono<DebitCardDTO> findById(String debitCardNumber);
 
-    Mono<BigDecimal> doCardWithdraw(String debitCardNumber, BigDecimal amount);
+    Mono<DebitCard> doCardWithdraw(String debitCardNumber, BigDecimal amount);
 
-    Mono<BigDecimal> doCardDeposit(String debitCardNumber, BigDecimal amount);
+    Mono<DebitCard> doCardDeposit(String debitCardNumber, BigDecimal amount);
 }
